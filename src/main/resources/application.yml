@@ -1,1 +1,3 @@
-spring.application.name=Spring-playground
+spring:
+  application:
+    name: Spring-playground
