@@ -1,5 +1,6 @@
 package com.learning.springplayground.user.entity;
 
+import com.learning.springplayground.global.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +31,5 @@ public class User {
     private String password;
 
     private boolean isStaff;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime modifiedAt;
 
 }
