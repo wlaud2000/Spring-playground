@@ -1,5 +1,9 @@
 package com.learning.springplayground.config;
 
+import com.learning.springplayground.security.filter.CustomLoginFilter;
+import com.learning.springplayground.security.filter.JwtAuthorizationFilter;
+import com.learning.springplayground.security.util.JwtUtil;
+import com.learning.springplayground.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -18,11 +23,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
     //인증이 필요하지 않은 url
     private final String[] allowedUrls = {
-            "/login", //로그인은 인증이 필요하지 않음
-            "/user/register", //회원가입은 인증이 필요하지 않음
+            "/users/login", //로그인은 인증이 필요하지 않음
+            "/users/signup", //회원가입은 인증이 필요하지 않음
             "/auth/reissue", //토큰 재발급은 인증이 필요하지 않음
             "/auth/**",
             "api/usage",
@@ -31,7 +38,7 @@ public class SecurityConfig {
     };
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception { //인증을 처리하는 역할을 담당
         return configuration.getAuthenticationManager();
     }
 
@@ -72,6 +79,19 @@ public class SecurityConfig {
                         .requestMatchers(allowedUrls).permitAll()
                         .anyRequest().authenticated() // 그 외의 url 들은 인증이 필요함
                 );
+
+        // CustomLoginFilter 인스턴스를 생성하고 필요한 의존성을 주입
+        CustomLoginFilter loginFilter = new CustomLoginFilter(
+                authenticationManager(authenticationConfiguration), jwtUtil);
+        // Login Filter URL 지정
+        loginFilter.setFilterProcessesUrl("/users/login");
+
+        // 필터 체인에 CustomLoginFilter를 UsernamePasswordAuthenticationFilter 자리에서 동작하도록 추가
+        http
+                .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class);
+        // JwtFilter를 CustomLoginFilter 앞에서 동작하도록 필터 체인에 추가
+        http
+                .addFilterBefore(new JwtAuthorizationFilter(jwtUtil, userRepository), CustomLoginFilter.class);
 
         return http.build();
     }
