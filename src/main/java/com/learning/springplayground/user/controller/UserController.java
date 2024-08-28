@@ -45,4 +45,10 @@ public class UserController {
         userService.deleteUser(authUser);
         return ResponseEntity.ok(Map.of("message", "회원 탈퇴가 완료되었습니다."));
     }
+
+    //테스트
+    @GetMapping("/user")
+    public AuthUser user(@CurrentUser AuthUser authUser) {
+        return authUser;
+    }
 }
