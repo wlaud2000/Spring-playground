@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<User> userEntity = userRepository.findByEmail(email);
         if (userEntity.isPresent()) {
             User user = userEntity.get(); //Optional로 한번 감쌌기 때문에 .get()으로 꺼내줘야함
-            return new CustomUserDetails(user.getEmail(),user.getPassword(),user.isStaff());
+            return new CustomUserDetails(user);
         }
         throw new UsernameNotFoundException("사용자가 존재하지 않습니다.");
     }
