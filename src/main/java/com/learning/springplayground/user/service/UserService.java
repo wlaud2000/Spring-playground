@@ -1,5 +1,6 @@
 package com.learning.springplayground.user.service;
 
+import com.learning.springplayground.user.dto.request.ChangeNickNameRequestDto;
 import com.learning.springplayground.user.dto.request.SignUpRequestDto;
 import com.learning.springplayground.user.dto.response.SignUpResponseDto;
 import com.learning.springplayground.user.dto.response.UserResponseDto;
@@ -50,6 +51,16 @@ public class UserService {
         userRepository.delete(user);
 
         log.info("[User Service] 사용자가 성공적으로 삭제되었습니다.");
+    }
+
+    //유저 이름 변경
+    public void changeNickName(AuthUser authUser, ChangeNickNameRequestDto changeNickNameRequestDto) {
+        User user = userRepository.findByEmail(authUser.getEmail())
+                .orElseThrow(()-> new NoSuchElementException("가입된 사용자 정보가 없습니다."));
+
+        String newNickName = changeNickNameRequestDto.newNickName();
+        user.updateNickname(newNickName);
+        log.info("[User Service] 이름이 변경되었습니다 -> {}", newNickName);
     }
 
 }

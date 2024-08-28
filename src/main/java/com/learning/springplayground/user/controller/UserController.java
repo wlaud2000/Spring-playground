@@ -1,6 +1,7 @@
 package com.learning.springplayground.user.controller;
 
 import com.learning.springplayground.global.annotation.CurrentUser;
+import com.learning.springplayground.user.dto.request.ChangeNickNameRequestDto;
 import com.learning.springplayground.user.dto.request.SignUpRequestDto;
 import com.learning.springplayground.user.dto.response.SignUpResponseDto;
 import com.learning.springplayground.user.dto.response.UserResponseDto;
@@ -44,5 +45,13 @@ public class UserController {
     public ResponseEntity<Map<String, String>> deleteUser(@CurrentUser AuthUser authUser) {
         userService.deleteUser(authUser);
         return ResponseEntity.ok(Map.of("message", "회원 탈퇴가 완료되었습니다."));
+    }
+
+    //이름 변경
+    @PatchMapping("/nickname")
+    public ResponseEntity<Map<String, String>> changeNickName(@CurrentUser AuthUser authUser,
+                                                              @RequestBody @Valid ChangeNickNameRequestDto requestDto) {
+        userService.changeNickName(authUser, requestDto);
+        return ResponseEntity.ok(Map.of("message", "이름이 성공적으로 변경되었습니다."));
     }
 }
