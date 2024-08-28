@@ -1,0 +1,45 @@
+name: Automated Code Review
+
+on:
+  pull_request:
+    branches:
+      - main  # PR이 열릴 때, main 브랜치와 비교하여 코드 리뷰 수행
+
+jobs:
+  review:
+    runs-on: ubuntu-latest  # 워크플로우가 실행될 환경 설정
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # 리포지토리의 코드를 체크아웃
+
+      - name: Install Ollama
+        run: |
+          curl -sSL https://ollama.com/install.sh | bash  # Ollama 설치
+
+      - name: Install LLM CLI
+        run: |
+          pip install llm  # LLM CLI 설치
+
+      - name: Download Qwen-2 Model
+        run: |
+          ollama pull qwen-2  # Qwen-2 모델 다운로드
+
+      - name: Run Code Review
+        run: |
+          git diff main...${{ github.head_ref }} | ollama run qwen-2 -- "You are a senior developer. Summarize the following changes in the submitted pull request focusing on major modifications, additions, deletions, and important updates. Include line numbers and code blocks in the summary. Provide advice for any problematic or difficult-to-maintain code." > review_summary.txt  # 코드 리뷰 실행 후 결과를 파일에 저장
+
+      - name: Upload Review Summary
+        uses: actions/upload-artifact@v3  # 결과 파일을 GitHub에 아티팩트로 업로드
+        with:
+          name: review-summary
+          path: review_summary.txt
+
+      - name: Add Review as Pull Request Comment
+        uses: mshick/add-pr-comment@v1  # Pull Request에 코드 리뷰 결과를 댓글로 추가
+        with:
+          message: |
+            ## Automated Code Review Summary
+            $(cat review_summary.txt)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
