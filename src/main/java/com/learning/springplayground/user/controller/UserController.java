@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -33,5 +35,12 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUser(@CurrentUser AuthUser authUser) {
         UserResponseDto userResponseDto = userService.getUserByEmail(authUser);
         return ResponseEntity.ok(userResponseDto);
+    }
+
+    //회원 탈퇴
+    @DeleteMapping("")
+    public ResponseEntity<Map<String, String>> deleteUser(@CurrentUser AuthUser authUser) {
+        userService.deleteUser(authUser);
+        return ResponseEntity.ok(Map.of("message", "회원 탈퇴가 완료되었습니다."));
     }
 }

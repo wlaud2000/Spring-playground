@@ -50,4 +50,15 @@ public class UserService {
     }
 
 
+    //유저 삭제
+    public void deleteUser(AuthUser authUser) {
+        User user = userRepository.findByEmail(authUser.getEmail())
+                .orElseThrow(()-> new NoSuchElementException("가입된 사용자 정보가 없습니다."));
+
+        //user 삭제
+        userRepository.delete(user);
+
+        log.info("[User Service] 사용자가 성공적으로 삭제되었습니다.");
+    }
+
 }
