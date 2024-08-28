@@ -23,7 +23,7 @@ jobs:
 
       - name: Download Qwen-2 Model
         run: |
-          ollama pull qwen-2  # Qwen-2 모델 다운로드
+          ollama pull qwen2  # Qwen-2 모델 다운로드
 
       - name: Run Code Review
         run: |
