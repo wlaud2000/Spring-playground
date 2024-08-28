@@ -41,15 +41,6 @@ public class UserService {
         return SignUpResponseDto.from(user);
     }
 
-    //회원 정보 조회
-    public UserResponseDto getUserByEmail(AuthUser authUser) {
-        User user = userRepository.findByEmail(authUser.getEmail())
-                .orElseThrow(()-> new NoSuchElementException("사용자가 존재하지 않습니다."));
-
-        return UserResponseDto.from(user);
-    }
-
-
     //유저 삭제
     public void deleteUser(AuthUser authUser) {
         User user = userRepository.findByEmail(authUser.getEmail())

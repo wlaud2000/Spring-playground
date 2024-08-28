@@ -5,6 +5,7 @@ import com.learning.springplayground.user.dto.request.SignUpRequestDto;
 import com.learning.springplayground.user.dto.response.SignUpResponseDto;
 import com.learning.springplayground.user.dto.response.UserResponseDto;
 import com.learning.springplayground.user.entity.AuthUser;
+import com.learning.springplayground.user.service.UserQueryService;
 import com.learning.springplayground.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final UserQueryService userQueryService;
 
     //회원 가입
     @PostMapping(value = "/signup")
@@ -33,7 +35,7 @@ public class UserController {
     //회원 정보 조회
     @GetMapping("")
     public ResponseEntity<UserResponseDto> getUser(@CurrentUser AuthUser authUser) {
-        UserResponseDto userResponseDto = userService.getUserByEmail(authUser);
+        UserResponseDto userResponseDto = userQueryService.getUserByEmail(authUser);
         return ResponseEntity.ok(userResponseDto);
     }
 
