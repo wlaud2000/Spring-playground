@@ -20,7 +20,6 @@ import java.util.NoSuchElementException;
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
-    private final ChatService chatService;
     private final UserRepository userRepository;
 
     @PostMapping("/room")
