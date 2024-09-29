@@ -47,6 +47,11 @@ public class UserController {
         return ResponseEntity.ok(Map.of("message", "회원 탈퇴가 완료되었습니다."));
     }
 
+
+    @GetMapping("/user")
+    public AuthUser user(@CurrentUser AuthUser authUser) {
+        return authUser;
+
     //이름 변경
     @PatchMapping("/nickname")
     public ResponseEntity<Map<String, String>> changeNickName(@CurrentUser AuthUser authUser,
@@ -54,4 +59,5 @@ public class UserController {
         userService.changeNickName(authUser, requestDto);
         return ResponseEntity.ok(Map.of("message", "이름이 성공적으로 변경되었습니다."));
     }
+      
 }
