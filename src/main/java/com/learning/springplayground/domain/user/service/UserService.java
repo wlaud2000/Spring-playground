@@ -1,11 +1,10 @@
-package com.learning.springplayground.user.service;
+package com.learning.springplayground.domain.user.service;
 
-import com.learning.springplayground.user.dto.request.SignUpRequestDto;
-import com.learning.springplayground.user.dto.response.SignUpResponseDto;
-import com.learning.springplayground.user.dto.response.UserResponseDto;
-import com.learning.springplayground.user.entity.AuthUser;
-import com.learning.springplayground.user.entity.User;
-import com.learning.springplayground.user.repository.UserRepository;
+import com.learning.springplayground.domain.user.dto.request.SignUpRequestDto;
+import com.learning.springplayground.domain.user.dto.response.SignUpResponseDto;
+import com.learning.springplayground.domain.user.entity.AuthUser;
+import com.learning.springplayground.domain.user.entity.User;
+import com.learning.springplayground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;

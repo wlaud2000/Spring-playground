@@ -1,11 +1,11 @@
-package com.learning.springplayground.user.controller;
+package com.learning.springplayground.domain.user.controller;
 
-import com.learning.springplayground.global.annotation.CurrentUser;
-import com.learning.springplayground.user.dto.request.SignUpRequestDto;
-import com.learning.springplayground.user.dto.response.SignUpResponseDto;
-import com.learning.springplayground.user.dto.response.UserResponseDto;
-import com.learning.springplayground.user.entity.AuthUser;
-import com.learning.springplayground.user.service.UserQueryService;
+import com.learning.springplayground.domain.user.dto.request.SignUpRequestDto;
+import com.learning.springplayground.domain.user.dto.response.SignUpResponseDto;
+import com.learning.springplayground.domain.user.dto.response.UserResponseDto;
+import com.learning.springplayground.domain.user.entity.AuthUser;
+import com.learning.springplayground.domain.user.service.UserQueryService;
+import com.learning.springplayground.global.jwt.annotation.CurrentUser;
 import com.learning.springplayground.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
