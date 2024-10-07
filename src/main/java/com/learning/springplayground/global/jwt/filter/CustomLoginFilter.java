@@ -1,10 +1,11 @@
 package com.learning.springplayground.global.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.learning.springplayground.domain.user.dto.request.UserReqDto;
+import com.learning.springplayground.domain.user.dto.response.UserResDto;
 import com.learning.springplayground.global.jwt.dto.JwtResponseDto;
 import com.learning.springplayground.global.jwt.userDetails.CustomUserDetails;
 import com.learning.springplayground.global.jwt.util.JwtUtil;
-import com.learning.springplayground.domain.user.dto.request.LoginRequestDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,16 +36,16 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 
         log.info("[ Login Filter ]  로그인 시도 : Custom Login Filter 작동 ");
         ObjectMapper objectMapper = new ObjectMapper();
-        LoginRequestDto requestBody;
+        UserReqDto.LoginRequestDto requestBody;
         try {
-            requestBody = objectMapper.readValue(request.getInputStream(), LoginRequestDto.class);
+            requestBody = objectMapper.readValue(request.getInputStream(), UserReqDto.LoginRequestDto.class);
         } catch (IOException e) {
             throw new AuthenticationServiceException("[ Login Filter ] Request Body 파싱 과정에서 오류가 발생했습니다.");
         }
 
         //Request Body 에서 추출
-        String email = requestBody.getEmail(); //Email 추출
-        String password = requestBody.getPassword(); //password 추출
+        String email = requestBody.email(); //Email 추출
+        String password = requestBody.password(); //password 추출
         log.info("[ Login Filter ]  Email ---> {} ", email);
         log.info("[ Login Filter ]  Password ---> {} ", password);
 

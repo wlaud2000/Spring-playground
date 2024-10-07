@@ -1,7 +1,8 @@
 package com.learning.springplayground.domain.user.service;
 
-import com.learning.springplayground.domain.user.dto.request.SignUpRequestDto;
-import com.learning.springplayground.domain.user.dto.response.SignUpResponseDto;
+import com.learning.springplayground.domain.user.converter.UserConverter;
+import com.learning.springplayground.domain.user.dto.request.UserReqDto;
+import com.learning.springplayground.domain.user.dto.response.UserResDto;
 import com.learning.springplayground.domain.user.entity.AuthUser;
 import com.learning.springplayground.domain.user.entity.User;
 import com.learning.springplayground.domain.user.repository.UserRepository;
@@ -23,21 +24,21 @@ public class UserService {
 
     //회원 가입
     @Transactional
-    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
+    public UserResDto.SignUpResponseDto signUp(UserReqDto.SignUpRequestDto signUpRequestDto) {
 
         //이메일 중복 확인
-        if(userRepository.existsByEmail(signUpRequestDto.getEmail())) {
+        if(userRepository.existsByEmail(signUpRequestDto.email())) {
             throw new RuntimeException("해당 이메일이 이미 존재합니다.");
         }
 
         //파라미터로 받은 registerRequestDto를 Entity로 변환
-        User user = signUpRequestDto.toEntity(passwordEncoder);
+        User user = UserConverter.toEntity(signUpRequestDto,passwordEncoder);
 
         //변환한 Entity를 DB에 저장
         userRepository.save(user);
 
         //DB에 저장한 Entity를 DTO로 변환 후 Controller단에 반환
-        return SignUpResponseDto.from(user);
+        return UserConverter.fromSignUp(user);
     }
 
     //유저 삭제

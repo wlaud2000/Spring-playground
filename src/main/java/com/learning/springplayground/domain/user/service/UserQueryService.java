@@ -1,6 +1,7 @@
 package com.learning.springplayground.domain.user.service;
 
-import com.learning.springplayground.domain.user.dto.response.UserResponseDto;
+import com.learning.springplayground.domain.user.converter.UserConverter;
+import com.learning.springplayground.domain.user.dto.response.UserResDto;
 import com.learning.springplayground.domain.user.entity.AuthUser;
 import com.learning.springplayground.domain.user.entity.User;
 import com.learning.springplayground.domain.user.repository.UserRepository;
@@ -18,11 +19,11 @@ public class UserQueryService {
     private final UserRepository userRepository;
 
     //회원 정보 조회
-    public UserResponseDto getUserByEmail(AuthUser authUser) {
+    public UserResDto.UserResponseDto getUserByEmail(AuthUser authUser) {
         User user = userRepository.findByEmail(authUser.getEmail())
                 .orElseThrow(()-> new NoSuchElementException("사용자가 존재하지 않습니다."));
 
-        return UserResponseDto.from(user);
+        return UserConverter.fromUser(user);
     }
 
 }
