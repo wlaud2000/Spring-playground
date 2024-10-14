@@ -5,6 +5,8 @@ import com.learning.springplayground.domain.user.dto.request.UserReqDto;
 import com.learning.springplayground.domain.user.dto.response.UserResDto;
 import com.learning.springplayground.domain.user.entity.AuthUser;
 import com.learning.springplayground.domain.user.entity.User;
+import com.learning.springplayground.domain.user.exception.UserErrorCode;
+import com.learning.springplayground.domain.user.exception.UserException;
 import com.learning.springplayground.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +30,7 @@ public class UserService {
 
         //이메일 중복 확인
         if(userRepository.existsByEmail(signUpRequestDto.email())) {
-            throw new RuntimeException("해당 이메일이 이미 존재합니다.");
+            throw new UserException(UserErrorCode.USER_ALREADY_EXIST);
         }
 
         //파라미터로 받은 registerRequestDto를 Entity로 변환
@@ -44,7 +46,7 @@ public class UserService {
     //유저 삭제
     public void deleteUser(AuthUser authUser) {
         User user = userRepository.findByEmail(authUser.getEmail())
-                .orElseThrow(()-> new NoSuchElementException("가입된 사용자 정보가 없습니다."));
+                .orElseThrow(()-> new UserException(UserErrorCode.USER_NOT_FOUND));
 
         //user 삭제
         userRepository.delete(user);
