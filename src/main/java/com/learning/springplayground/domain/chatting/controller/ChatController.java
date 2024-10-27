@@ -4,14 +4,14 @@ import com.learning.springplayground.domain.chatting.dto.ChatMessageDto;
 import com.learning.springplayground.domain.chatting.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class ChatController {
     private final ChatService chatService;
 

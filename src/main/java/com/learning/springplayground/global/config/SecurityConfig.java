@@ -25,6 +25,7 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
+    private final CorsConfig corsConfig;
 
     //인증이 필요하지 않은 url
     private final String[] allowedUrls = {
@@ -33,6 +34,7 @@ public class SecurityConfig {
             "/auth/reissue", //토큰 재발급은 인증이 필요하지 않음
             "/auth/**",
             "api/usage",
+            "/ws-stomp/**",  // WebSocket 엔드포인트
             "/swagger-ui/**",
             "v3/api-docs/**"
     };
@@ -53,7 +55,7 @@ public class SecurityConfig {
         // CORS 정책 설정
         http
                 .cors(cors -> cors
-                        .configurationSource(CorsConfig.apiConfigurationSource()));
+                        .configurationSource(corsConfig.corsConfigurationSource()));
 
         // csrf 비활성화
         http

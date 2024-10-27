@@ -36,9 +36,9 @@ public class ChatService {
 
 
         // 메시지 발행
-        String destination = "/exchange/amq.topic/chat/"+chatMessage.roomId();
-        System.out.println("Sending message to: " + destination);  // 경로 출력
-        System.out.println("Message content: " + chatMessage.message());  // 메시지 내용 출력
+        String destination = "/topic/chat/" + chatMessage.roomId();
+        System.out.println("Sending message to: " + destination);
+        System.out.println("Message content: " + chatMessage.message());
         messagingTemplate.convertAndSend(destination, chatMessage);
     }
 
